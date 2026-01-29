@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1); 
 
 namespace App\Models;
 
@@ -16,18 +16,23 @@ class User extends Authenticatable
 
     /**
      * The attributes that are mass assignable.
-     *
+     * Son cumplimentables
      * @var list<string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'age',// añadido: campo age
+        'address',// añadido: campo address
+        'zip_code',// añadido: campo zip_code
+
+
     ];
 
     /**
      * The attributes that should be hidden for serialization.
-     *
+     *No son cumplimentables por eso se ocultan
      * @var list<string>
      */
     protected $hidden = [

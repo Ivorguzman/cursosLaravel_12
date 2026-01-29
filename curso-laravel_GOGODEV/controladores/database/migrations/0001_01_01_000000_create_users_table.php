@@ -1,4 +1,6 @@
-<?php declare(strict_types=1); 
+<?php
+
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -9,7 +11,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up(): void //   Ejecute las migraciones.
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
@@ -17,7 +19,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            
+            $table->unsignedInteger('age')->default(0);// añadido: campo age
+            $table->string('address')->nullable();// añadido: campo address
+            $table->unsignedInteger('zip_code')->nullable();// añadido: campo zip_code
             $table->rememberToken();
             $table->timestamps();
         });
@@ -41,7 +45,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down(): void // para hacer lo rollback
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');

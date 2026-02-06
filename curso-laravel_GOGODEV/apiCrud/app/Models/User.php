@@ -1,36 +1,34 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Database\Query\Expression;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use zip_codeIlluminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
+
 class User extends Authenticatable
-    {
+{
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use \Illuminate\Database\Eloquent\Factories\HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
-     * Son rellenables
+     *
      * @var list<string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'age',// añadido: campo age
-        'address',// añadido: campo address
-        'zip_code',// añadido: campo zip_code
     ];
 
     /**
      * The attributes that should be hidden for serialization.
-     *No son rellenables por eso se ocultan
+     *
      * @var list<string>
      */
     protected $hidden = [
@@ -41,28 +39,27 @@ class User extends Authenticatable
     ];
 
     /**
-     * Obtén los atributos que deben ser convertidos.
+     * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
     protected function casts(): array
-        {
+    {
         return [
-            'email_verified_at' => 'dateime',
-            'password'          => 'hashed',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
-        }
+    }
 
     /**
      * Get the user's initials
      */
     public function initials(): string
-        {
+    {
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
-        }
-
     }
+}

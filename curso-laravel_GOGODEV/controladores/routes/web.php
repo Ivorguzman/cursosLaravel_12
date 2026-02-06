@@ -17,6 +17,8 @@ require __DIR__.'/settings.php'; */
 
 
 // Vinculando la ruta raíz con el método index del UserController
-Route::get('/', [UserController::class, 'index'])->name('user_index');
-Route::get('/create', [UserController::class, 'create'])->name('user_create');
+Route::get('/', [UserController::class, 'index'])->name('UserController_index');
+
+
+Route::get('/create', [UserController::class, 'crearUsuario'])->name('UserController_crearUsuario');
 

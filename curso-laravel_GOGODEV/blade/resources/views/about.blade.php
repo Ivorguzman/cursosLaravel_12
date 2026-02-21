@@ -1,16 +1,17 @@
 {{--
     ==== QUÉ ES ====
-    Esta es otra "Vista Hija", como `index.blade.php`. Su único propósito es definir el contenido
-    para la página "Sobre Nosotros".
+    Esta es una "Vista Hija". Su propósito es definir el contenido único de una página específica (en este caso, la página de about).
+    No contiene la estructura HTML completa (<html>, <head>, etc.) porque la "hereda" de una plantilla maestra.
 
     ==== CÓMO FUNCIONA ====
-    Funciona exactamente igual que `index.blade.php`:
-    1. `@extends('layouts.landing')` para heredar el esqueleto HTML.
-    2. `@section(...)` para rellenar los huecos de la plantilla maestra con el título y el contenido de esta página.
+     1. `@extends('layouts.landing')` le dice a Blade: "Usa `resources/views/layouts/landing.blade.php` como mi esqueleto".
+        OjO==> ESTA DEBE SER SIEMPRE LA PRIMERA LÍNEA DE UNA VISTA HIJA.
+     2. `@section('name', 'value')` o `@section('name') ... @endsection` se usa para "rellenar" los "huecos" indicados con en la pagina maestra landig.blade.php (`@yield`) osea 
+    que fueron definidos en la plantilla maestra descrita anteriormente.
 
     ==== POR QUÉ SE USA ====
-    Para crear una nueva página (`/about`) en nuestro sitio de forma rápida y consistente,
-    reutilizando toda la estructura ya creada (layout, navbar, etc).
+    Para mantener el contenido de la página separado de la estructura del sitio. Esto hace que el desarrollo
+    sea mucho más limpio y organizado. Solo te concentras en el contenido específico de esta página.
 --}}
 
 
@@ -23,7 +24,7 @@
 
 
 {{-- 3. Definimos el bloque de contenido principal para el `@yield('content')`. --}}
-@section('content')
+@section('main')
 
     {{--
         Reutilizamos nuestro componente de encabezado, pero le pasamos un título diferente.

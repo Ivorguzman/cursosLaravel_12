@@ -1,15 +1,18 @@
 {{--
     ==== QUÉ ES ====
-    Otra "Vista Hija" para la página de "Servicios".
+    Esta es una "Vista Hija". Su propósito es definir el contenido único de una página específica (en este caso, la página de Servicios === landig.blade.php ===).
+    No contiene la estructura HTML completa (<html>, <head>, etc.) porque la "hereda" de una plantilla maestra.
 
     ==== CÓMO FUNCIONA ====
-    Idéntico a las vistas anteriores: hereda de `layouts.landing` y rellena las secciones `title` y `content`.
+    1. `@extends('layouts.landing')` le dice a Blade: "Usa `resources/views/layouts/landing.blade.php` como mi esqueleto, plantilla, layouts, etc.".
+        OjO==> ESTA DEBE SER SIEMPRE LA PRIMERA LÍNEA DE UNA VISTA HIJA.
+    2. `@section('name', 'value')` o `@section('name') ... @endsection` se usa para "rellenar" los "huecos" indicados con en la pagina maestra landig.blade.php (`@yield`) osea 
+       que fueron definidos en la plantilla maestra descrita anteriormente.
 
     ==== POR QUÉ SE USA ====
-    Para añadir la sección de "Servicios" a nuestro sitio web manteniendo una estructura y diseño consistentes
-    sin esfuerzo y sin duplicar código.
+    Para mantener el contenido de la página separado de la estructura del sitio. Esto hace que el desarrollo
+    sea mucho más limpio y organizado. Solo te concentras en el contenido específico de esta página.
 --}}
-
 
 {{-- 1. Heredamos la plantilla. Toda la estructura HTML se carga desde aquí. --}}
 @extends('layouts.landing')
@@ -23,7 +26,7 @@
 
 
 {{-- 3. Abrimos el bloque para definir el contenido principal y único de esta página. --}}
-@section('content')
+@section('main')
 
     {{--
         Usamos una vez más nuestro componente, demostrando su reusabilidad.
@@ -54,12 +57,8 @@
             <li class="list-group-item">Uso de componentes reutilizables.</li>
             <li class="list-group-item">
                 @component('components.card')
-                    @slot('title')
-                        
-                    @endslot
-                    @slot('content')
-                       
-                    @endslot
+                   {{--  @slot('titulo')
+                    @endslot --}}
                 @endcomponent
             </li>
         </ul>

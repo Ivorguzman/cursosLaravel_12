@@ -4,10 +4,10 @@
     No contiene la estructura HTML completa (<html>, <head>, etc.) porque la "hereda" de una plantilla maestra.
 
     ==== CÓMO FUNCIONA ====
-    1. `@extends('layouts.landing')` le dice a Blade: "Usa `resources/views/layouts/landing.blade.php` como mi esqueleto".
-       ESTA DEBE SER SIEMPRE LA PRIMERA LÍNEA DE UNA VISTA HIJA.
-    2. `@section('name', 'value')` o `@section('name') ... @endsection` se usa para "rellenar" los "huecos" (`@yield`)
-       que fueron definidos en la plantilla maestra.
+     1. `@extends('layouts.landing')` le dice a Blade: "Usa `resources/views/layouts/landing.blade.php` como mi esqueleto".
+        OjO==> ESTA DEBE SER SIEMPRE LA PRIMERA LÍNEA DE UNA VISTA HIJA.
+     2. `@section('name', 'value')` o `@section('name') ... @endsection` se usa para "rellenar" los "huecos" indicados con en la pagina maestra landig.blade.php (`@yield`) osea 
+    que fueron definidos en la plantilla maestra descrita anteriormente.
 
     ==== POR QUÉ SE USA ====
     Para mantener el contenido de la página separado de la estructura del sitio. Esto hace que el desarrollo
@@ -36,7 +36,7 @@
     - Todo lo que está entre `@section('content')` y `@endsection` será inyectado en el lugar
       donde pusimos `@yield('content')` en la plantilla maestra.
 --}}
-@section('content')
+@section('main')
 
     {{--
         `<x-page-header>`:
@@ -45,12 +45,12 @@
         - `title="Bienvenido a GogoDev"`: Esto es pasar una "prop" (propiedad) al componente. El string "Bienvenido a GogoDev"
           se asignará a la variable `$title` dentro del archivo del componente.
     --}}
-    <x-page-header title="Bienvenido a GogoDev">
+    <x-page-header title="Bienvenido a practicar Laravel con una mini landing page">
         {{--
             Todo el contenido que ponemos AQUÍ, entre la etiqueta de apertura y cierre del componente,
             será capturado e inyectado en la variable `$slot` dentro del componente.
         --}}
-        Esta es la página principal de nuestro proyecto de práctica de Blade.
+        Esta es la página principal de nuestro proyecto de práctica en Blade.
     </x-page-header>
 
 
@@ -66,9 +66,10 @@
             La barra de navegación y la estructura HTML general vienen de `layouts/landing.blade.php`.
         </p>
         <p>
-            Hemos usado nuestro componente x-page-header` para mostrar el título de la página de una forma estandarizada y reutilizable.
+            Hemos usado nuestro componente x-page-header` para mostrar el título de la página de una forma estandarizada y
+            reutilizable.
         </p>
     </div>
 
-{{-- `@endsection` marca el final del bloque de la sección 'content'. --}}
+    {{-- `@endsection` marca el final del bloque de la sección 'content'. --}}
 @endsection

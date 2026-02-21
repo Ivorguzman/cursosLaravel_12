@@ -1,13 +1,17 @@
 {{--
     ==== QUÉ ES ====
-    La última "Vista Hija" de nuestro ejemplo, para la página de "Contacto".
+    Esta es una "Vista Hija". Su propósito es definir el contenido único de una página específica (en este caso, la página de contacto).
+    No contiene la estructura HTML completa (<html>, <head>, etc.) porque la "hereda" de una plantilla maestra.
 
     ==== CÓMO FUNCIONA ====
-    Sigue exactamente el mismo patrón que las demás: hereda el layout y define el contenido.
+     1. `@extends('layouts.landing')` le dice a Blade: "Usa `resources/views/layouts/landing.blade.php` como mi esqueleto".
+        OjO==> ESTA DEBE SER SIEMPRE LA PRIMERA LÍNEA DE UNA VISTA HIJA.
+     2. `@section('name', 'value')` o `@section('name') ... @endsection` se usa para "rellenar" los "huecos" indicados con en la pagina maestra landig.blade.php (`@yield`) osea 
+    que fueron definidos en la plantilla maestra descrita anteriormente.
 
     ==== POR QUÉ SE USA ====
-    Para completar nuestro sitio con una página de contacto, demostrando una vez más lo fácil
-    y rápido que es añadir páginas a un proyecto bien estructurado con Blade.
+    Para mantener el contenido de la página separado de la estructura del sitio. Esto hace que el desarrollo
+    sea mucho más limpio y organizado. Solo te concentras en el contenido específico de esta página.
 --}}
 
 
@@ -20,7 +24,7 @@
 
 
 {{-- 3. Definimos el contenido principal y único que se inyectará en el @yield('content'). --}}
-@section('content')
+@section('main')
 
     {{-- Usamos el componente de encabezado con el título correspondiente a esta página. --}}
     <x-page-header title="Ponte en Contacto">

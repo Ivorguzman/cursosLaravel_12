@@ -4,7 +4,7 @@
 --}}
 @extends('layouts.note.layout-index')
 
-
+ 
 {{--
     2. @section('title', ...): Define el contenido para la sección 'title'.
     Como es una línea corta, podemos pasar el contenido como segundo argumento.

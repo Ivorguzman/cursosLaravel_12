@@ -15,7 +15,14 @@ use App\Http\Controllers\NoteController;
 
 Route::get('/note', [NoteController::class, 'index'])->name('name_note.index');
 
+
 Route::get('/note/create', [NoteController::class, 'create'])->name('name_note.create');
+
+
+
+
+
+
 
 Route::post('/note', [NoteController::class, 'store'])->name('name_note.store');
 

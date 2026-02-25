@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 /**
@@ -82,5 +83,64 @@ class NoteController extends Controller
          * En este caso, no necesitamos pasarle ningún dato, ya que es un formulario vacío.
          */
         return view('note.create');
+        }
+
+
+    public function store(Request $request)
+        {
+        // NOTA DE ESTUDIO: Diferencia entre $request->input('key') y $request->key
+        //
+        // 1. $request->input('key'):
+        //    - Es el método explícito y más versátil.
+        //    - Permite pasar un valor por defecto: $request->input('key', 'default').
+        //    - Permite acceder a datos anidados con "dot notation": $request->input('user.name').
+        //    - Considerado por muchos una mejor práctica por ser más claro.
+        //
+        // 2. $request->key:
+        //    - Es un atajo o "propiedad mágica" que Laravel ofrece por conveniencia (azucar sintactico).
+        //    - Es más corto y limpio para leer. Funciona bien para datos simples.
+        //    - En el fondo, es un atajo para $request->input('key').
+        /*     
+        * //^ Opción  1 ===  (usando el método input() (más explícito)) ===:
+        $note = new Note();
+        $note->title = $request->input('title');
+        $note->description = $request->input('description');
+        $note->save(); */
+
+        /*       
+       * //^  Opcion 2 === (usando propiedades mágicas más corto Sin el input("...")) ===: 
+         $note = new Note();
+         $note->title = $request->title;
+         $note->description = $request->description;
+         $note->save();
+
+        return redirect()->route('name_note.index');
+
+        */
+
+
+
+        /*      
+        * //^ Opción 3 === (usando asignación masiva con $fillable en el modelo):===
+            Note::create([
+            'title'       => $request->title,
+            'description' => $request->description,
+         ]);
+
+        return redirect()->route('name_note.index'); */
+
+
+        //^ Opción 4 === (usando asignación masiva con $fillable y el método all() del request):===
+        Note::create($request->all());
+
+        return redirect()->route('name_note.index');
+
+        }
+
+
+
+    public function edit(Note $note)
+        {
+        return view('note.edit', ['note' => $note]);
         }
     }

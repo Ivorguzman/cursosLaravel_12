@@ -11,8 +11,8 @@ class Note extends Model
     {
     use HasFactory;
     protected $fillable = [
-        "titulo",
-        "descripcion",
+        "title",
+        "description",
     ];
     }
  

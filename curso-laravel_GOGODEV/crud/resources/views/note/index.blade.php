@@ -1,6 +1,6 @@
 {{--
        La directiva @extends indica que esta vista "hija" extiende un layout base.
-       En este caso, el layout se encuentra en 'layouts.note.layout-index', lo que corresponde
+    (vista Padre) En este caso, el layout se encuentra en 'layouts.note.layout-index', lo que corresponde
        a la ruta 'resources/views/layouts/note/layout-index.blade.php' sin la extensión .blade.php.
    
        El layout base define la estructura general de la página, incluyendo el HTML, head, body,
@@ -44,14 +44,14 @@ La directiva @section('title', 'Mi Título')  define el contenido de una secció
    --}}
 @section('mainContent')
     <h1 class='color_2'>Hola Mundo laravel Index</h1>
+    <button class="color_1" onclick="location.href='{{ route('name_note.create') }}'"> Insetar Nota Nueva</button>
     <ul>
         <h2 class='color_1'>listado de notas: </h2>
-        <li>
-            @forelse ($notes as $note)
-        <li class="color_1">{{ $note->title }}</li>
-    @empty
-        <p class="color_3">=== No hay notas disponibles ===</p>
+
+        @forelse ($notes as $note)
+            <li class="color_1">{{ $note->title }}</li>
+        @empty
+            <p class="color_3">=== No hay notas disponibles ===</p>
         @endforelse
-        </li>
     </ul>
 @endsection

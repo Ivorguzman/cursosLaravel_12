@@ -139,8 +139,19 @@ class NoteController extends Controller
 
 
 
+    /*  
+    // Uso del metode del array explicito para pasar datos a la vista  usado por el taller
+    public function edit(Note $note)
+            {
+            return view('note.edit', ['note' => $note]);
+            }
+   */
+
+
+    // uso del metodo  compact() de php para pasar datos a la vista (Modo magico) recomendado 
     public function edit(Note $note)
         {
-        return view('note.edit', ['note' => $note]);
+        return view('note.edit', compact('note'));
         }
+
     }

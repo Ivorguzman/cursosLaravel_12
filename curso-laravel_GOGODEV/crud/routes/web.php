@@ -15,7 +15,7 @@ Route::get('/note/create', [NoteController::class, 'create'])->name('name_note.c
 Route::post('/note/store', [NoteController::class, 'store'])->name('name_note.store');
 
 
-/* 
-Route::get('/note/edit', [NoteController::class, 'edit'])->name('name_note.edit'); */
 
-Route::get('/note/edit/{note}', [NoteController::class, 'edit'])->name('name_note.edit');
+Route::get('/note/edit', [NoteController::class, 'edit'])->name('name_note.edit');
+
+/* Route::get('/note/edit/{note}', [NoteController::class, 'edit'])->name('name_note.edit'); */

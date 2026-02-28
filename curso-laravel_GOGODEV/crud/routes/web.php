@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
 
-
+Route::get('/', [NoteController::class, 'index'])->name('name_note.index');
 
 Route::get('/note', [NoteController::class, 'index'])->name('name_note.index');
 

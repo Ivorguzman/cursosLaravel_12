@@ -48,10 +48,12 @@ class NoteController extends Controller
          * `Note::all()` es un método estático proporcionado por Eloquent (el ORM de Laravel).
          * Ejecuta una consulta SQL (`SELECT * FROM notes`) para obtener todos los registros de la tabla 'notes'.
          * El resultado es una Colección de Laravel, que es como un array "superpoderoso" de objetos `Note`.
-         *
-         * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Note> $notes
-         */
-        $notes = Note::orderBy('title', 'asc')->get();
+        *
+        * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Note> $notes
+        */
+        // $notes = Note::orderBy('title', 'asc')->get();
+        $notes = Note::all();
+
 
         /**
          * Retorno de la Vista:

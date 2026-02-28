@@ -52,7 +52,9 @@
             El contenido de esa sección se insertará aquí, dentro de la etiqueta <title>.
         --}}
         <title>@yield('title')</title>
-
+ <!-- BootStrap -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
     </head>
 
     <body>
@@ -67,7 +69,8 @@
             --}}
             @yield('mainContent')
         </main>
-
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-3.3.1.slim.min.js') }}"></script>
     </body>
 
 </html>

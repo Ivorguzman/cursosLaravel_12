@@ -1,18 +1,18 @@
 {{--
-       La directiva @extends indica que esta vista "hija" extiende un layout base.
-    (vista Padre) En este caso, el layout se encuentra en 'layouts.note.layout-index', lo que corresponde
-       a la ruta 'resources/views/layouts/note/layout-index.blade.php' sin la extensión .blade.php.
-   
-       El layout base define la estructura general de la página, incluyendo el HTML, head, body,
-       y puntos de inserción para el contenido específico de cada página. Las vistas "hijas"
-       pueden rellenar estas secciones con su propio contenido, permitiendo una gran flexibilidad
-       y reutilización del código. --}}
+La directiva @extends indica que esta vista "hija" extiende un layout base.
+(vista Padre) En este caso, el layout se encuentra en 'layouts.note.layout-index', lo que corresponde
+a la ruta 'resources/views/layouts/note/layout-index.blade.php' sin la extensión .blade.php.
+
+El layout base define la estructura general de la página, incluyendo el HTML, head, body,
+y puntos de inserción para el contenido específico de cada página. Las vistas "hijas"
+pueden rellenar estas secciones con su propio contenido, permitiendo una gran flexibilidad
+y reutilización del código. --}}
 @extends('layouts.note.layout-index')
 
 {{--
-    @push('styles'): "Empuja o Inyecta" este bloque de código a la pila (stack) 'styles' en el layout.
-     Así es como añadimos CSS específico para esta página sin ensuciar el layout.  }}
-    --}}
+@push('styles'): "Empuja o Inyecta" este bloque de código a la pila (stack) 'styles' en el layout.
+Así es como añadimos CSS específico para esta página sin ensuciar el layout. }}
+--}}
 @push('styles')
     <style>
         .color_1 {
@@ -32,26 +32,70 @@
 
 
 
-{{-- 
-La directiva @section('title', 'Mi Título')  define el contenido de una sección del layout base.
- --}}
+{{--
+La directiva @section('title', 'Mi Título') define el contenido de una sección del layout base.
+--}}
 @section('title', 'Página Index')
 
 
 
 {{--
-  La directiva @section('...') .... @endsection define el contenido de una sección del layout base.
-   --}}
+La directiva @section('...') .... @endsection define el contenido de una sección del layout base.
+--}}
 @section('mainContent')
     <h1 class='color_2'>Hola Mundo laravel Index</h1>
-    <button class="color_1" onclick="location.href='{{ route('name_note.create') }}'"> Insetar Nota Nueva</button>
-    <ul>
-        <h2 class='color_1'>listado de notas: </h2>
 
-        @forelse ($notes as $note)
-            <li class="color_1">{{ $note->title }}</li>
-        @empty
-            <p class="color_3">=== No hay notas disponibles ===</p>
-        @endforelse
-    </ul>
+    <div class="container mt-5" style="width: 80%;">
+        <div class="card">
+            <!-- Añadido padding interno a card-body -->
+            <div class="card-body p-4">
+                <div class="card-header">
+
+                    <h1 class="text-primary">Listado de Notas</h1>
+                </div>
+                <div class="p-4">
+
+                    <button class=" btn btn-primary" onclick="location.href='{{ route('name_note.create') }}'"> Insetar Nota
+                        Nueva &raquo</button>
+                </div>
+                <table class="table table-striped  table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nota</th>
+                            <th>Descripción</th>
+                            <th>Editar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($notes as $note)
+                            <tr>
+                                <td>{{ $note->title }}</td>
+                                <td>{{ $note->description }}</td>
+                                <td>
+                                    <a href="{{ route('name_note.edit', $note) }}" class="btn btn-warning">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <form action="{{ route('name_note.destroy', $note) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center">No hay notas disponibles.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection

@@ -51,7 +51,7 @@ class NoteController extends Controller
          *
          * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Note> $notes
          */
-        $notes = Note::all();
+        $notes = Note::orderBy('title', 'asc')->get();
 
         /**
          * Retorno de la Vista:
@@ -88,24 +88,25 @@ class NoteController extends Controller
 
     public function store(Request $request)
         {
-        // NOTA DE ESTUDIO: Diferencia entre $request->input('key') y $request->key
-        //
-        // 1. $request->input('key'):
-        //    - Es el método explícito y más versátil.
-        //    - Permite pasar un valor por defecto: $request->input('key', 'default').
-        //    - Permite acceder a datos anidados con "dot notation": $request->input('user.name').
-        //    - Considerado por muchos una mejor práctica por ser más claro.
-        //
-        // 2. $request->key:
-        //    - Es un atajo o "propiedad mágica" que Laravel ofrece por conveniencia (azucar sintactico).
-        //    - Es más corto y limpio para leer. Funciona bien para datos simples.
-        //    - En el fondo, es un atajo para $request->input('key').
-        /*     
-        * //^ Opción  1 ===  (usando el método input() (más explícito)) ===:
-        $note = new Note();
-        $note->title = $request->input('title');
-        $note->description = $request->input('description');
-        $note->save(); */
+        /* 
+       NOTA DE ESTUDIO: Diferencia entre $request->input('key') y $request->key
+
+       1. $request->input('key'):
+          - Es el método explícito y más versátil.
+          - Permite pasar un valor por defecto: $request->input('key', 'default').
+          - Permite acceder a datos anidados con "dot notation": $request->input('user.name').
+          - Considerado por muchos una mejor práctica por ser más claro.
+
+       2. $request->key:
+          - Es un atajo o "propiedad mágica" que Laravel ofrece por conveniencia (azucar sintactico).
+          - Es más corto y limpio para leer. Funciona bien para datos simples.
+          - En el fondo, es un atajo para $request->input('key').
+
+       * //^ Opción  1 ===  (usando el método input() (más explícito)) ===:
+       $note = new Note();
+       $note->title = $request->input('title');
+       $note->description = $request->input('description');
+       $note->save(); */
 
         /*       
        * //^  Opcion 2 === (usando propiedades mágicas más corto Sin el input("...")) ===: 
@@ -132,7 +133,6 @@ class NoteController extends Controller
 
         //^ Opción 4 === (usando asignación masiva con $fillable y el método all() del request):===
         Note::create($request->all());
-
         return redirect()->route('name_note.index');
 
         }
@@ -151,7 +151,16 @@ class NoteController extends Controller
     // uso del metodo  compact() de php para pasar datos a la vista (Modo magico) recomendado 
     public function edit(Note $note)
         {
+      /*   $note->update(); */
         return view('note.edit', compact('note'));
+        }
+
+
+
+    public function destroy(Note $note)
+        {
+        $note->delete();
+        return redirect()->route('name_note.index');
         }
 
     }

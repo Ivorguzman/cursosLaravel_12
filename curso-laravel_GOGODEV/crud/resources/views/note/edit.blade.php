@@ -75,11 +75,11 @@ Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') e
                 --}}
                 @csrf
                 <label class="label-form" for="title">Título:</label>
-                <input type="text" id="title" name="title">
+                <input type="text" id="title" name="title" value="{{ $note->title }}">
                 <br>
-                <br>
+                <br> 
                 <label class="label-form " for="description">Contenido:</label>
-                <textarea id="description" name="description"></textarea>
+                <textarea id="description" name="description">{{ $note->description }}</textarea>
                 <br>
                 <br>
                 <button class="color" type="submit">Salvar edición de Nota</button>

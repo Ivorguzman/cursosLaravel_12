@@ -45,13 +45,12 @@ class NoteController extends Controller
         {
         /**
          * Interacción con el Modelo:
-         * `Note::all()` es un método estático proporcionado por Eloquent (el ORM de Laravel).
+         * `Note ===::all()===` es un método estático proporcionado por Eloquent (el ORM de Laravel).
          * Ejecuta una consulta SQL (`SELECT * FROM notes`) para obtener todos los registros de la tabla 'notes'.
-         * El resultado es una Colección de Laravel, que es como un array "superpoderoso" de objetos `Note`.
-        *
-        * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Note> $notes
-        */
-        // $notes = Note::orderBy('title', 'asc')->get();
+         * El resultado es una Colección de Laravel, que es -<COMO>- un array "superpoderoso" de objetos `Note`.
+         *
+         * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Note> $notes
+         */
         $notes = Note::all();
 
 
@@ -59,8 +58,8 @@ class NoteController extends Controller
          * Retorno de la Vista:
          * `view('note.index', compact('notes'))` hace dos cosas:
          * 1. Carga el archivo de la vista ubicado en `resources/views/note/index.blade.php`.
-         * 2. Pasa los datos a la vista. `compact('notes')` es un atajo de PHP para crear un array asociativo
-         *    ['notes' => $notes]. Dentro de la vista, ahora existirá una variable `$notes` que contiene la  colección de notas que obtuvimos de la base de datos.
+         * 2. Pasa los datos a la vista. `compact('notes')` es un atajo de PHP para crear un array -<asociativo>-
+         *    ['notes' => $notes]. -<Dentro de la vista>-, ahora existirá una variable `$notes` que contiene la  colección de notas que obtuvimos de la base de datos.
          */
         return view('note.index', compact('notes'));
         }
@@ -141,21 +140,61 @@ class NoteController extends Controller
 
 
 
-    /*  
-    // Uso del metode del array explicito para pasar datos a la vista  usado por el taller
-    public function edit(Note $note)
-            {
-            return view('note.edit', ['note' => $note]);
-            }
-   */
-
-
     // uso del metodo  compact() de php para pasar datos a la vista (Modo magico) recomendado 
-    public function edit(Note $note)
+    public function edit($note)
+    // Basado en  programación de Objeto (usando poliformismo)
         {
-      /*   $note->update(); */
-        return view('note.edit', compact('note'));
+        $notaEditar = Note::find($note);
+        return view('note.edit', compact('notaEditar'));
         }
+
+
+
+    // ^ Metodo 1 ===  usando el metodo find() para buscar la nota por su id y luego actualizarla usando el metodo update() del modelo se puede hacer por que los valores  que se reciben  coinciden con los valores del modelo('title' y 'description') y ademas se tiene el $fillable en el modelo para permitir la asignacion masiva  ===:
+    public function update(Request $request, Note $note)
+        {
+        $note->update($request->all());
+        return redirect()->route('name_note.index');
+        }
+
+
+
+    // ^ Metodo 2 ===   usando asignacion masiva con $fillable y el metodo all() del request pero de forma explicita ===:
+    public function update2(Request $request, Note $note)
+        {
+        $note->update([
+            'title'       => $request->title,
+            'description' => $request->description,
+        ]);
+        return redirect()->route('name_note.index');
+        }
+
+
+
+    // ^ Metodo 3 === usando asignacion masiva con $fillable y el metodo all() del request pero de forma explicita sin usar el metodo update() sino usando save() despues de asignar los valores a las propiedades del modelo===:
+    public function update3(Request $request, Note $note)
+        {
+        $note->title = $request->title;
+        $note->description = $request->description;
+        $note->save();
+        return redirect()->route('name_note.index');
+        }
+
+
+
+    //^ Metodo 4 === (usando el método update() del modelo con asignación masiva) ===:
+    public function update4(Request $request, $note)
+        {
+        $note = Note::find($note);
+        $note->update([
+            'title'       => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('name_note.index');
+        }
+        
+
 
 
 

@@ -16,28 +16,28 @@ y reutilización del código. --}}
 Así es como añadimos CSS específico para esta página sin ensuciar el layout.
 --}}
 @push('styles')
-	<style>
-		.form-create {
-			/* Estilos del formulario */
-			max-width: 300px;
-			margin: 0 auto;
-			padding: 16px;
-			border: 1px solid #2403fe;
-			border-radius: 8px;
-			background: #a8e4f4;
-		}
+    <style>
+        .form-create {
+            /* Estilos del formulario */
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 16px;
+            border: 1px solid #2403fe;
+            border-radius: 8px;
+            background: #a8e4f4;
+        }
 
-		.label-form {
-			display: block;
-			margin-bottom: 6px;
-			font-weight: bold;
-			color: rgb(13, 77, 106);
-		}
+        .label-form {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: rgb(13, 77, 106);
+        }
 
-		.color {
-			color: #2403fe;
-		}
-	</style>
+        .color {
+            color: #2403fe;
+        }
+    </style>
 @endpush
 
 
@@ -58,11 +58,12 @@ Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') e
 --}}
 @section('mainContent')
 
-		<h1 class="color">Formulario Editar Nota</h1>
+    <h1 class="color">Formulario Editar Nota</h1>
     <a href="{{route('name_note.index')}}" class='color'>
         <== Regresar a Index</a>
-				
-            <form class="form-create" method="POST" action="{{ route('name_note.store') }}">
+{{-- action="{{ route('name_note.destroy', $note) }}" --}}
+            <form class="form-create" action="{{ route('name_note.update', $notaEditar->id ) }}" method="POST" >
+                @method('PUT')
                 {{--
                 5. @csrf: Es una directiva de Blade crucial para la seguridad.
                 Propósito: Proteger la aplicación contra ataques de "Cross-Site Request Forgery" (CSRF).
@@ -75,11 +76,11 @@ Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') e
                 --}}
                 @csrf
                 <label class="label-form" for="title">Título:</label>
-                <input type="text" id="title" name="title" value="{{ $note->title }}">
+                <input type="text" id="title" name="title" value="{{ $notaEditar->title }}">
                 <br>
-                <br> 
+                <br>
                 <label class="label-form " for="description">Contenido:</label>
-                <textarea id="description" name="description">{{ $note->description }}</textarea>
+                <textarea id="description" name="description">{{ $notaEditar->description }}</textarea>
                 <br>
                 <br>
                 <button class="color" type="submit">Salvar edición de Nota</button>

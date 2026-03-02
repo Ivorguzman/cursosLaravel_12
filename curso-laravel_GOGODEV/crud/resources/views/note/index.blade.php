@@ -72,11 +72,19 @@ La directiva @section('...') .... @endsection define el contenido de una secció
                             <tr>
                                 <td>{{ $note->title }}</td>
                                 <td>{{ $note->description }}</td>
+ 
+ 
+
+                                {{--  //Opcion de editar la nota  --}}
                                 <td>
-                                    <a href="{{ route('name_note.edit', $note) }}" class="btn btn-warning">
+                                    <a href="{{ route('name_note.edit', ['note' => $note->id]) }}" class="btn btn-warning">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                 </td>
+
+
+
+                                {{-- Opción de Eliminar  la nota --}}
                                 <td>
                                     <form action="{{ route('name_note.destroy', $note) }}" method="POST"
                                         style="display:inline;">

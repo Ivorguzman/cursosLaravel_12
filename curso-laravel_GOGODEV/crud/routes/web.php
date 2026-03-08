@@ -12,7 +12,9 @@ Route::post('/note/store', [NoteController::class, 'store'])->name('name_note.st
 
 Route::get('/note/edit/{note}', [NoteController::class, 'edit'])->name('name_note.edit');
 
-Route::put('/note/update/{note}',[NoteController::class, 'update'])->name('name_note.update');
+Route::put('/note/update/{note}',[NoteController::class, 'update5'])->name('name_note.update');
+
+Route::get('/note/show/{note}', [NoteController::class, 'show'])->name('name_note.show');
 
 Route::delete('/note/delete/{note}', [NoteController::class, 'destroy'])->name('name_note.destroy');
 

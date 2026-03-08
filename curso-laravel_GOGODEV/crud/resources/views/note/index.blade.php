@@ -63,39 +63,46 @@ La directiva @section('...') .... @endsection define el contenido de una secció
                         <tr>
                             <th>Nota</th>
                             <th>Descripción</th>
+                            <th>Mostrar</th>
                             <th>Editar</th>
                             <th>Borrar</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($notes as $note)
-                            <tr>
-                                <td>{{ $note->title }}</td>
-                                <td>{{ $note->description }}</td>
- 
- 
+                                <tr>
+                                    <td>{{ $note->title }}</td>
+                                    <td>{{ $note->description }}</td>
 
-                                {{--  //Opcion de editar la nota  --}}
-                                <td>
-                                    <a href="{{ route('name_note.edit', ['note' => $note->id]) }}" class="btn btn-warning">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                </td>
+                            {{-- //Opcion de Mostrar la nota --}}
+                            <td>
+                                <a href="{{ route('name_note.show', ['note' => $note->id]) }}" class="btn btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
 
 
+                                    {{-- //Opcion de editar la nota --}}
+                                    <td>
+                                        <a href="{{ route('name_note.edit', ['note' => $note->id]) }}" class="btn btn-warning">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                    </td>
 
-                                {{-- Opción de Eliminar  la nota --}}
-                                <td>
-                                    <form action="{{ route('name_note.destroy', $note) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
+
+
+                                    {{-- Opción de Eliminar la nota --}}
+                                    <td>
+                                        <form action="{{ route('name_note.destroy', $note) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center">No hay notas disponibles.</td>

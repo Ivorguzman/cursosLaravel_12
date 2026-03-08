@@ -193,10 +193,29 @@ class NoteController extends Controller
 
         return redirect()->route('name_note.index');
         }
-        
 
 
 
+    //^ Metodo 5 === (  usando el método update() del modelo con asignación masiva pero creando una nueva instancia del modelo(nota) para usar el metodo find() de Model y luego actualizar note) ===:
+    public function update5(Request $request, $note)
+        {
+        $nota = new Note();
+        $note = $nota::find($note);
+        $note->update([
+            'title'       => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('name_note.index');
+
+        }
+
+ 
+    public function show($note)
+        {
+        $notaMotrar = Note::find($note);
+        return view('note.show', compact('notaMotrar'));
+        }
 
     public function destroy(Note $note)
         {

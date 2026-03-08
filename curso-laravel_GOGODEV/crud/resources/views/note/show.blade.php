@@ -1,20 +1,18 @@
-
 {{--
-1. @extends: Le dice a Blade que esta vista "hereda" la estructura de nuestro layout principal.
-La ruta usa notación de puntos y no incluye la extensión .blade.php.
---}}
+1. La directiva @extends indica que esta vista "hija" extiende un layout base.
+(vista Padre) En este caso, el layout se encuentra en 'layouts.note.layout-index', lo que corresponde
+a la ruta 'resources/views/layouts/note/layout-index.blade.php' sin la extensión .blade.php.
+
+El layout base define la estructura general de la página, incluyendo el HTML, head, body,
+y puntos de inserción para el contenido específico de cada página. Las vistas "hijas"
+pueden rellenar estas secciones con su propio contenido, permitiendo una gran flexibilidad
+y reutilización del código. --}}
 @extends('layouts.note.layout-index')
 
 
-{{--
-2. @section('title', ...): Define el contenido para la sección 'title'.
-Como es una línea corta, podemos pasar el contenido como segundo argumento.
---}}
-@section('title', 'Crear Nueva Nota')
-
 
 {{--
-3. @push('styles'): "Empuja" este bloque de código a la pila (stack) 'styles' en el layout.
+2. @push('styles'): "Empuja" este bloque de código a la pila (stack) 'styles' en el layout.
 Así es como añadimos CSS específico para esta página sin ensuciar el layout.
 --}}
 @push('styles')
@@ -43,13 +41,28 @@ Así es como añadimos CSS específico para esta página sin ensuciar el layout.
 @endpush
 
 
+
+
+
 {{--
-4. @section('main'): Define el bloque de contenido principal.
-Todo lo que esté aquí adentro se insertará donde este @yield('main') en el layout.
+2. @section('title', ...): Define el contenido para la sección 'title'.
+Como es una línea corta, podemos pasar el contenido como segundo argumento.
+--}}
+@section('title', 'Editar Nota')
+
+
+
+{{--
+3. @section('mainContent'): Define el bloque de contenido principal.
+Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') en el layout.
 --}}
 @section('mainContent')
-    <h1 class="color">Formulario Crear Nota</h1>
-                <form class="form-create" method="POST" action="{{ route('name_note.store') }}">
+
+    <h1 class="color">Formulario Mostar Nota</h1>
+    {{-- <a href="{{route('name_note.index')}}" class='color'>
+        <== Regresar a Index</a> --}}
+            {{-- action="{{ route('name_note.destroy', $note) }}" --}}
+            <form class="form-create">
                 {{--
                 5. @csrf: Es una directiva de Blade crucial para la seguridad.
                 Propósito: Proteger la aplicación contra ataques de "Cross-Site Request Forgery" (CSRF).
@@ -62,15 +75,14 @@ Todo lo que esté aquí adentro se insertará donde este @yield('main') en el la
                 --}}
                 @csrf
                 <label class="label-form" for="title">Título:</label>
-                <input type="text" id="title" name="title">
+                <input type="text" id="title" name="title" value="{{ $notaMotrar->title }}">
                 <br>
                 <br>
                 <label class="label-form " for="description">Contenido:</label>
-                <textarea id="description" name="description"></textarea>
+                <textarea id="description" name="description">{{ $notaMotrar->description }}</textarea>
                 <br>
                 <br>
-                <button class="color" type="submit">Crear Nota</button>
-                <br>
-                <br>
-                <a href="{{route('name_note.index')}}" class='color'>&laquo Regresar sin CREAR nota</a>
+                <a href="{{route('name_note.index')}}" class='color'>&laquo Regresar</a>
+                {{-- <button  href="{{route('name_note.index')}}" class='color'>Regresar a la Nota</button> --}}
 @endsection
+

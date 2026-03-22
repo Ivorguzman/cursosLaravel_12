@@ -62,7 +62,7 @@ Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') e
     {{-- <a href="{{route('name_note.index')}}" class='color'>
         <== Regresar a Index</a> --}}
             {{-- action="{{ route('name_note.destroy', $note) }}" --}}
-            <form method="POST" class="form-create">
+            <form  class="form-create">
                 {{--
                 5. @csrf: Es una directiva de Blade crucial para la seguridad.
                 Propósito: Proteger la aplicación contra ataques de "Cross-Site Request Forgery" (CSRF).

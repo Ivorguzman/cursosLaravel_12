@@ -110,6 +110,7 @@ La directiva @section('...') .... @endsection define el contenido de una secció
                                         puedan enviar datos.
                                         --}}
                                         @csrf
+
                                         @method('PATCH'){{-- Especifica que la peticion POST debe ser tratado como una petición
                                         PATCH --}}
                                         <button type="submit" class="btn btn-warning">

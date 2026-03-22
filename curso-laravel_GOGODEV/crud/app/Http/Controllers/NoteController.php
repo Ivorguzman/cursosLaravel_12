@@ -30,29 +30,29 @@ use Illuminate\View\View;
  * @see resources/views/note/create.blade.php (La vista que muestra el formulario para crear una nota)
  */
 class NoteController extends Controller
-    {
+{
     /**
      * Muestra una lista de todas las notas.
      */
     public function index(): View
-        {
+    {
         $notes = Note::all();
         return view('note.index', compact('notes'));
-        }
+    }
 
     /**
      * Muestra el formulario para crear una nueva nota.
      */
     public function create(): View
-        {
+    {
         return view('note.create');
-        }
+    }
 
     /**
      * Almacena una nueva nota en la base de datos.
      */
     public function store(Request $request): RedirectResponse
-        {
+    {
         $request->validate([
             'title'       => 'required|string|min:4|max:255',
             'description' => 'required|string|min:4|max:255',
@@ -60,33 +60,34 @@ class NoteController extends Controller
 
         Note::create($request->all());
         return redirect()->route('name_note.index');
-        }
+    }
 
     /**
      * Muestra una nota específica.
      * Uso de Route-Model Binding para inyectar automáticamente la instancia del modelo.
      */
-    public function show(Request $request, Note $note): View
-        {
+    public function show(Note $note): View
+    {
         // Pasamos la nota a la vista con el nombre 'notaMotrar' para coincidir con la vista existente.
         return view('note.show', ['notaMotrar' => $note]);
-        }
+    }
 
     /**
      * Muestra el formulario para editar una nota existente.
      * Uso de Route-Model Binding.
      */
-    public function edit(Request $request, Note $note): View
-        {
+    public function edit(Note $note): View
+    {
+        
         // Pasamos la nota a la vista con el nombre 'note' que ya corregimos en el paso anterior.
         return view('note.edit', compact('note'));
-        }
+    }
 
     /**
      * Actualiza una nota específica en la base de datos.
      */
     public function update(Request $request, Note $note): RedirectResponse
-        {
+    {
         $request->validate([
             'title'       => 'required|string|min:4|max:255',
             'description' => 'required|string|min:4|max:255',
@@ -94,14 +95,14 @@ class NoteController extends Controller
 
         $note->update($request->all());
         return redirect()->route('name_note.index');
-        }
+    }
 
     /**
      * Elimina una nota específica de la base de datos.
      */
     public function destroy(Note $note): RedirectResponse
-        {
+    {
         $note->delete();
         return redirect()->route('name_note.index');
-        }
     }
+}

@@ -6,7 +6,7 @@ use App\Models\Note;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use View;
+use Illuminate\View\View;
 
 /**
  * =================================================================================================================
@@ -32,225 +32,76 @@ use View;
 class NoteController extends Controller
     {
     /**
-     * -------------------------------------------------------------------------------------------------------------
-     * MÉTODO: index
-     * -------------------------------------------------------------------------------------------------------------
-     *
-     * Propósito:
-     * Este método se encarga de mostrar una lista de todas las notas existentes.
-     * Es la página principal para la sección de notas de la aplicación.
-     *
-     * @return \Illuminate\View\View
-     *         Retorna una instancia de la clase View, que Blade compilará en HTML.
+     * Muestra una lista de todas las notas.
      */
     public function index(): View
         {
-        /**
-         * Interacción con el Modelo:
-         * `Note ===::all()===` es un método estático proporcionado por Eloquent (el ORM de Laravel).
-         * Ejecuta una consulta SQL (`SELECT * FROM notes`) para obtener todos los registros de la tabla 'notes'.
-         * El resultado es una Colección de Laravel, que es -<COMO>- un array "superpoderoso" de objetos `Note`.
-         *
-         * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Note> $notes
-         */
         $notes = Note::all();
-
-
-        /**
-         * Retorno de la Vista:
-         * `view('note.index', compact('notes'))` hace dos cosas:
-         * 1. Carga el archivo de la vista ubicado en `resources/views/note/index.blade.php`.
-         * 2. Pasa los datos a la vista. `compact('notes')` es un atajo de PHP para crear un array -<asociativo>-
-         *    ['notes' => $notes]. -<Dentro de la vista>-, ahora existirá una variable `$notes` que contiene la  colección de notas que obtuvimos de la base de datos.
-         */
-        return view(view: 'note.index', data: compact('notes'));
+        return view('note.index', compact('notes'));
         }
 
     /**
-     * -------------------------------------------------------------------------------------------------------------
-     * MÉTODO: create
-     * -------------------------------------------------------------------------------------------------------------
-     *
-     * Propósito:
-     * Este método se encarga de mostrar el formulario para crear una nueva nota.
-     * No procesa la creación de la nota, solo muestra la vista con los campos necesarios.
-     *
-     * @return \Illuminate\View\View
-     *         Retorna una instancia de la clase View, que Blade compilará en HTML.
+     * Muestra el formulario para crear una nueva nota.
      */
     public function create(): View
         {
-        /**
-         * Retorno de la Vista:
-         * `view('note.create')` carga el archivo de la vista ubicado en `resources/views/note/create.blade.php`.
-         * En este caso, no necesitamos pasarle ningún dato, ya que es un formulario vacío.
-         */
-        return view(view: 'note.create');
+        return view('note.create');
         }
 
-
+    /**
+     * Almacena una nueva nota en la base de datos.
+     */
     public function store(Request $request): RedirectResponse
         {
-        /* 
-       NOTA DE ESTUDIO: Diferencia entre $request->input('key') y $request->key
+        $request->validate([
+            'title'       => 'required|string|min:4|max:255',
+            'description' => 'required|string|min:4|max:255',
+        ]);
 
-       1. $request->input('key'):
-          - Es el método explícito y más versátil.
-          - Permite pasar un valor por defecto: $request->input('key', 'default').
-          - Permite acceder a datos anidados con "dot notation": $request->input('user.name').
-          - Considerado por muchos una mejor práctica por ser más claro.
-
-       2. $request->key:
-          - Es un atajo o "propiedad mágica" que Laravel ofrece por conveniencia (azucar sintactico).
-          - Es más corto y limpio para'0 leer. Funciona bien para datos simples.
-          - En el fondo, es un atajo para $request->input('key').
-
-       * //^ Opción  1 ===  (usando el método input() (más explícito)) ===:
-       $note = new Note();
-       $note->title = $request->input('title');
-       $note->description = $request->input('description');
-       $note->save(); */
-
-        /*       
-       * //^  Opcion 2 === (usando propiedades mágicas más corto Sin el input("...")) ===: 
-         $note = new Note();
-         $note->title = $request->title;
-         $note->description = $request->description;
-         $note->save();
-
-        return redirect()->route('name_note.index');
-
-        */
-
-
-
-        /*      
-        * //^ Opción 3 === (usando asignación masiva con $fillable en el modelo):===
-            Note::create([
-            'title'       => $request->title,
-            'description' => $request->description,
-         ]);
-
-        return redirect()->route('name_note.index'); */
-
-
-        //^ Opción 4 === (usando asignación masiva con $fillable y el método all() del request):===
         Note::create($request->all());
         return redirect()->route('name_note.index');
-
         }
 
-
-
-    // uso del metodo  compact() de php para pasar datos a la vista (Modo magico) recomendado 
-    public function edit($note): View
-    // Basado en  programación de Objeto (usando poliformismo)
+    /**
+     * Muestra una nota específica.
+     * Uso de Route-Model Binding para inyectar automáticamente la instancia del modelo.
+     */
+    public function show(Request $request, Note $note): View
         {
-        $notaEditar = Note::find($note);
-        return view('note.edit', compact('notaEditar'));
+        // Pasamos la nota a la vista con el nombre 'notaMotrar' para coincidir con la vista existente.
+        return view('note.show', ['notaMotrar' => $note]);
         }
 
+    /**
+     * Muestra el formulario para editar una nota existente.
+     * Uso de Route-Model Binding.
+     */
+    public function edit(Request $request, Note $note): View
+        {
+        // Pasamos la nota a la vista con el nombre 'note' que ya corregimos en el paso anterior.
+        return view('note.edit', compact('note'));
+        }
 
-
-    // ^ Metodo 1 ===  usando el metodo find() para buscar la nota por su id y luego actualizarla usando el metodo update() del modelo se puede hacer por que los valores  que se reciben  coinciden con los valores del modelo('title' y 'description') y ademas se tiene el $fillable en el modelo para permitir la asignacion masiva  ===:
+    /**
+     * Actualiza una nota específica en la base de datos.
+     */
     public function update(Request $request, Note $note): RedirectResponse
         {
-        $note->update(attributes: $request->all());
-        return redirect()->route(route: 'name_note.index');
-        }
-
-
-
-    // ^ Metodo 2 ===   usando asignacion masiva con $fillable y el metodo all() del request pero de forma explicita ===:
-    public function update2(Request $request, Note $note)
-        {
-        $note->update(attributes: [
-            'title'       => $request->title,
-            'description' => $request->description,
-        ]);
-        return redirect()->route(route: 'name_note.index');
-        }
-
-
-
-    // ^ Metodo 3 === usando asignacion masiva con $fillable y el metodo all() del request pero de forma explicita sin usar el metodo update() sino usando save() despues de asignar los valores a las propiedades del modelo===:
-    public function update3(Request $request, Note $note)
-        {
-        $note->title = $request->title;
-        $note->description = $request->description;
-        $note->save();
-        return redirect()->route(route: 'name_note.index');
-        }
-
-
-
-    //^ Metodo 4 === (usando el método update() del modelo con asignación masiva) ===:
-    public function update4(Request $request, $note): RedirectResponse
-        {
-        $note = Note::find(id: $note);
-        $note->update(attributes: [
-            'title'       => $request->title,
-            'description' => $request->description,
+        $request->validate([
+            'title'       => 'required|string|min:4|max:255',
+            'description' => 'required|string|min:4|max:255',
         ]);
 
+        $note->update($request->all());
         return redirect()->route('name_note.index');
         }
 
-
-
-    //^ Metodo 5 === (  usando el método update() del modelo con asignación masiva pero creando una nueva instancia del modelo(nota) para usar el metodo find() de Model y luego actualizar note) ===:
-    public function update5(Request $request, $note): RedirectResponse
-        {
-        $nota = new Note();
-        $note = $nota::find(id: $note);
-        $note->update(attributes: [
-            'title'       => $request->title,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->route(route: 'name_note.index');
-
-        }
-
-
-    public function show($note): View
-        {
-        $notaMotrar = Note::find(id: $note);
-        return view(view: 'note.show', data: compact(var_name: 'notaMotrar'));
-        }
-
-
-
-
-    // Metodo   apropiado para eliminar una nota usando el metodo find() para buscar la nota por su id y luego eliminarla usando el metodo delete() del modelo se puede hacer por que los valores  que se reciben  coinciden con los valores del modelo('title' y 'description') y ademas se tiene el $fillable en el modelo para permitir la asignacion masiva  ===:
+    /**
+     * Elimina una nota específica de la base de datos.
+     */
     public function destroy(Note $note): RedirectResponse
         {
         $note->delete();
-        return redirect()->route(route: 'name_note.index');
+        return redirect()->route('name_note.index');
         }
-
-
-
-    //Metodo 2 para eliminar una nota usando la clase  Request buscando la nota  con Note::find() y a asignandola a $request pa usar despues el metodo delete() del modelo  ===:
-    public function destroy2(Request $request, $note): RedirectResponse
-        {
-        $request = Note::find($note);
-        $request->delete();
-        return redirect()->route(route: 'name_note.index');
-        }
-
-
-
-    /*    
-       // Funciona pero con  logica equivocada 
-    public function destroy(Note $note)
-                {
-                $note->delete();
-                return redirect()->route('name_note.index');
-                } */
-
-
-
-
-
     }

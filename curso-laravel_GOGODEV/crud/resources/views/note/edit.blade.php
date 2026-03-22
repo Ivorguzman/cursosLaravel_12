@@ -60,8 +60,8 @@ Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') e
 
         <h1 class="color">Formulario Editar Nota</h1>
     {{-- action="{{ route('name_note.destroy', $note) }}" --}}
-                <form class="form-create" action="{{ route('name_note.update', $notaEditar->id) }}" method="POST">
-                    @method('PUT')
+                <form class="form-create" action="{{ route('name_note.update', $note->id) }}" method="POST">
+                   {{--  @method('PATCH') Especifica que este formulario debe ser tratado como una petición PATCH  por laravel--}}
                     {{--
                     5. @csrf: Es una directiva de Blade crucial para la seguridad.
                     Propósito: Proteger la aplicación contra ataques de "Cross-Site Request Forgery" (CSRF).
@@ -74,11 +74,11 @@ Todo lo que esté aquí adentro se insertará donde este @yield('mainContent') e
                     --}}
                     @csrf
                     <label class="label-form" for="title">Título:</label>
-                    <input type="text" id="title" name="title" value="{{ $notaEditar->title }}">
+                    <input type="text" id="title" name="title" value="{{ $note->title }}">
                     <br>
                     <br>
                     <label class="label-form " for="description">Contenido:</label>
-                    <textarea id="description" name="description">{{ $notaEditar->description }}</textarea>
+                    <textarea id="description" name="description">{{ $note->description }}</textarea>
                     <br>
                     <br>
                     <button class="color" type="submit">Salvar edición de Nota</button>

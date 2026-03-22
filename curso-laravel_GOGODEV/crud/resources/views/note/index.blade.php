@@ -70,39 +70,81 @@ La directiva @section('...') .... @endsection define el contenido de una secció
                     </thead>
                     <tbody>
                         @forelse ($notes as $note)
-                                <tr>
-                                    <td>{{ $note->title }}</td>
-                                    <td>{{ $note->description }}</td>
+                            <tr>
+                                <td>{{ $note->title }}</td>
+                                <td>{{ $note->description }}</td>
 
-                            {{-- //Opcion de Mostrar la nota --}}
-                            <td>
-                                <a href="{{ route('name_note.show', ['note' => $note->id]) }}" class="btn btn-info">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </td>
+                                {{-- //Opcion de Mostrar la nota --}}
+                                <td>
+                                    <a href="{{ route('name_note.show', ['note' => $note->id]) }}" class="btn btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+
+                                {{--
+                                //Opcion de editar la nota
+                                <td>
+                                    <a href="{{ route('name_note.edit', ['note' => $note->id]) }}" class="btn btn-warning">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </td>
+                                --}}
 
 
-                                    {{-- //Opcion de editar la nota --}}
-                                    <td>
-                                        <a href="{{ route('name_note.edit', ['note' => $note->id]) }}" class="btn btn-warning">
+                                {{-- Opción de editar la nota --}}
+                                <td>
+                                    <form action="{{ route('name_note.edit', $note) }}" method="POST" style="display:inline;">
+
+                                        {{--
+                                        @csrf: Es una directiva de Blade crucial para la seguridad.
+                                        Propósito: Proteger la aplicación contra ataques de "Cross-Site Request Forgery" (CSRF).
+                                        Mecanismo: Genera un campo <input> oculto en el formulario que contiene un "token" (un
+                                        valor único y
+                                        secreto).
+                                        Verificación: Cuando el formulario se envía, el middleware de Laravel intercepta la
+                                        petición y comprueba que
+                                        este token coincida con el que está almacenado en la sesión del usuario.
+                                        Resultado: Si el token falta o no coincide, la petición se rechaza (normalmente con un
+                                        error 419 "Page
+                                        Expired"), asegurando que solo los formularios generados por nuestra propia aplicación
+                                        puedan enviar datos.
+                                        --}}
+                                        @csrf
+                                        @method('PATCH'){{-- Especifica que la peticion POST debe ser tratado como una petición
+                                        PATCH --}}
+                                        <button type="submit" class="btn btn-warning">
                                             <i class="fas fa-pencil-alt"></i>
-                                        </a>
-                                    </td>
+                                        </button>
+                                    </form>
+                                </td>
 
 
-
-                                    {{-- Opción de Eliminar la nota --}}
-                                    <td>
-                                        <form action="{{ route('name_note.destroy', $note) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                {{-- Opción de Eliminar la nota --}}
+                                <td>
+                                    <form action="{{ route('name_note.destroy', $note) }}" method="POST" style="display:inline;">
+                                        {{--
+                                        @csrf: Es una directiva de Blade crucial para la seguridad.
+                                        Propósito: Proteger la aplicación contra ataques de "Cross-Site Request Forgery" (CSRF).
+                                        Mecanismo: Genera un campo <input> oculto en el formulario que contiene un "token" (un
+                                        valor único y
+                                        secreto).
+                                        Verificación: Cuando el formulario se envía, el middleware de Laravel intercepta la
+                                        petición y comprueba que
+                                        este token coincida con el que está almacenado en la sesión del usuario.
+                                        Resultado: Si el token falta o no coincide, la petición se rechaza (normalmente con un
+                                        error 419 "Page
+                                        Expired"), asegurando que solo los formularios generados por nuestra propia aplicación
+                                        puedan enviar datos.
+                                        --}}
+                                        @csrf
+                                        @method('DELETE') {{-- Especifica que la peticion POST debe ser tratado como una
+                                        petición DELETE por Laravel --}}
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center">No hay notas disponibles.</td>
